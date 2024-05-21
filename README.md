@@ -9,7 +9,7 @@ Function "chkCountry" queries the mmdb (MAXMIND DB) file to match the country th
 
 A Dockerfile is included that helps you build your image to be used with Docker engine or an existing kubernetes cluster that can also keep the country mapping data up to date.
 
-Cronjob is added to the docker image to run geoipupdate every Tuesday & Friday
+Cronjob is added to the docker image to run geoipupdate every Tuesday & Friday.
 
 
 ## Functionality
