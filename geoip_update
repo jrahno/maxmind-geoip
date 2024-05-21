@@ -1,0 +1,2 @@
+# cronjob to update the geoip DB twice a week on Tuesdays and Fridays
+54 3 * * 0,3 /usr/bin/geoipupdate

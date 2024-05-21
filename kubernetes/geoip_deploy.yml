@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geoip-nodes
+  namespace: default
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: geoip-nodes
+  template:
+    metadata:
+      labels:
+        app: geoip-nodes
+    spec:
+      containers:
+      - name: geoip-nodes
+        image: jrahno/maxmind_geoip
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
