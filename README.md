@@ -7,6 +7,10 @@ The API receives two data elements in a json format (IPv4 address and a list of 
 
 Function "chkCountry" queries the mmdb (MAXMIND DB) file to match the country that IP belongs and compares the matched country with the list of allowed countries we have received in the POST and returns an indication of "PASS" or "FAIL" for the request.
 
+A Dockerfile is included that helps you build your image to be used with Docker engine or an existing kubernetes cluster that can also keep the country mapping data up to date.
+
+Cronjob is added to the docker image to run geoipupdate every Tuesday & Friday
+
 
 ## Functionality
 
