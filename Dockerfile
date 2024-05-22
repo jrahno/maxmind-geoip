@@ -13,20 +13,20 @@ RUN wget https://github.com/maxmind/geoipupdate/releases/download/v7.0.1/geoipup
 RUN dpkg -i geoipupdate_7.0.1_linux_amd64.deb
 
 # copy api script to image
-COPY geoip /MAXMIND
-COPY api.sh /MAXMIND
+COPY geoip /geoip
+COPY api.sh /
 COPY geoip_update /etc/cron.d/
 COPY geoip/GeoIP.conf /etc/
 
 # update geoip DB
-RUN /usr/bin/geoipupdate
+RUN /usr/bin/geoipupdate -d /geoip/
 
 # prepare python env
-RUN cd /MAXMIND
+RUN cd /geoip
 RUN pip install pipenv
 RUN pipenv --python 3.9
 RUN pipenv install flask geoip2
 
 EXPOSE 5000/tcp
 
-ENTRYPOINT ["/MAXMIND/api.sh"]
+ENTRYPOINT ["/api.sh"]

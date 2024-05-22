@@ -28,27 +28,35 @@ app = Flask(__name__) # Define our flask import name
     
 @app.route('/', methods=['POST']) # We only accept POST method here
 
-# Define chkCountry function to query th 
+# Define chkCountry function to query the DB
 def chkCountry():
         # save received elements in separate variables
         ip = request.json['IP']
-        allowed = request.json['Countries']
+        try:
+            allowed = request.json['Countries']
+        except KeyError:
+            print("Country list invalid\n")
+            return ("Country list invalid\n")
 
         # convert list of countries to lower case
         countries = [i.lower() for i in allowed]
 
         # Read the MAXMIND mmdb file and dump the data into a dictionary for the given IP address
-        with geoip2.database.Reader('/usr/share/GeoIP/GeoLite2-Country.mmdb') as reader:
-            c = reader.country(ip)
+        with geoip2.database.Reader('geoip/GeoLite2-Country.mmdb') as reader:
+            try:
+                c = reader.country(ip)
 
-            # Return a string/code if we have a country match
-            if c.country.name.lower() in countries:
-                return ("PASS\n")
-            
-                # Option to return 200
-                # return '', 200
-            else:
-                return ("FAIL\n")
-            
-                # Option to return 404
-                # return '', 404
+                # Return a string/code if we have a country match
+                if c.country.name.lower() in countries:
+                    return ("PASS\n")
+                
+                    # Option to return 200
+                    # return '', 200
+                else:
+                    return ("FAIL\n")
+                
+                    # Option to return 404
+                    # return '', 404
+            except ValueError:
+                print("Not a valid IP address\n")
+                return ("Not a valid IP address\n")

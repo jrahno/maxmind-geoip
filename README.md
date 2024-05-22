@@ -9,7 +9,7 @@ Function "chkCountry" queries the mmdb (MAXMIND DB) file to match the country th
 
 A Dockerfile is included that helps you build your image to be used with Docker engine or an existing kubernetes cluster that can also keep the country mapping data up to date.
 
-Cronjob is added to the docker image to run geoipupdate every Tuesday & Friday.
+Cronjob is added to the docker image to run geoipupdate every Tuesday & Friday. See [updating-databases](https://dev.maxmind.com/geoip/updating-databases?lang=en) for help on how to configure the maxmind database updating service
 
 
 ## Functionality
@@ -38,9 +38,19 @@ Cronjob is added to the docker image to run geoipupdate every Tuesday & Friday.
 
     - Install pip dependencies
     
-        `pipenv install flask`
+        `pipenv install flask geoip2`
+
+    - copy your MAXMIND mmdb file to "geoip" directory
+
+    - Start the service
+
+        `./api.sh`
 
 - Docker
+
+    - copy your "GeoIP.conf" to "geoip" directory
+
+    - copy your MAXMIND mmdb file to "geoip" directory (geoipupdate service will automatically update this file twice a week)
 
     - Use included "Dockerfile" to build your docker image
 
@@ -55,6 +65,7 @@ Cronjob is added to the docker image to run geoipupdate every Tuesday & Friday.
     - Use included YML files in "kubernetes" folder to create your 2 PODS for load balancing
 
         `kubectl apply -f geoip_deploy.yml`
+
         `kubectl apply -f geoip_service.yml`
 
     - Extract the service URL
